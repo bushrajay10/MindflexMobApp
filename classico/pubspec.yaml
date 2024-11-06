@@ -1,0 +1,44 @@
+name: Mindlfex
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  firebase_core: ^2.14.0 # Add the latest version of firebase_core
+  cloud_firestore: ^4.4.0
+  firebase_auth: ^4.16.0
+  table_calendar: ^3.0.0
+  firebase_analytics: ^10.4.0
+  cupertino_icons: ^1.0.8
+  icons_plus: ^4.0.0
+  curved_navigation_bar: ^1.0.6
+  carousel_slider: ^5.0.0
+  url_launcher: ^6.0.0-nullsafety.6
+  email_validator: ^2.1.17
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/ULOG.png
+    - assets/images/bg1.png
+    - assets/images/BOWLING_BALL.jpg
+    - assets/images/color_hoops.jpg
+    - assets/images/row_a_boat.jpg
+    - assets/images/beat_saber.jpg
+    - assets/images/VRGAMES.png
+    - assets/images/VIDEOCON.png
+    - assets/images/feedback-two.png
+    - assets/images/doctorAdd.jpg
+    - assets/images/LOGO.png
