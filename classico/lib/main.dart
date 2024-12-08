@@ -1,3 +1,4 @@
+import 'package:Mindlfex/screens/BookAppointmentScreen.dart';
 import 'package:Mindlfex/screens/DoctorHomeScreen.dart';
 import 'package:Mindlfex/screens/PrivacyPolicy.dart';
 import 'package:Mindlfex/screens/game_1.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const DoctorHomeScreen(), //yh const splashscreen() ayega
+      home: const SplashScreen(), //yh const splashscreen() ayega
     );
   }
 }

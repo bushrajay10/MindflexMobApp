@@ -249,7 +249,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         items: const [
                           DropdownMenuItem(value: 'Doctor', child: Text('Doctor')),
                           DropdownMenuItem(value: 'Patient', child: Text('Patient')),
-                          DropdownMenuItem(value: 'Admin', child: Text('Therapist')),
+                         // DropdownMenuItem(value: 'Admin', child: Text('Therapist')),
                         ],
                         onChanged: (String? value) {
                           setState(() {

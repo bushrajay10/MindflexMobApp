@@ -10,7 +10,7 @@ class dr_3 extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80.0),
         child: AppBar(
-          backgroundColor: const Color(0xFF349E9E),
+          backgroundColor: const Color(0xFF06A3DA),
           elevation: 5,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -82,7 +82,7 @@ class dr_3 extends StatelessWidget {
                         'DR FATIMA KHAN',
                         style: TextStyle(
                           fontSize: 18,
-                          color: Color(0xFF349E9E),
+                          color: Color(0xFF06A3DA),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -109,7 +109,7 @@ class dr_3 extends StatelessWidget {
                 const Text(
                   'Connect Doctor With',
                   style: TextStyle(
-                    color: Color(0xFF349E9E),
+                    color: Color(0xFF06A3DA),
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -156,7 +156,7 @@ class dr_3 extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF349E9E),
+                              color: Color(0xFF06A3DA),
                             ),
                           ),
                         ],
@@ -201,7 +201,7 @@ class dr_3 extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF349E9E),
+                              color: Color(0xFF06A3DA),
                             ),
                           ),
                         ],
@@ -231,7 +231,7 @@ class dr_3 extends StatelessWidget {
                             borderRadius: BorderRadius.circular(50),
                             child: Container(
                               padding: const EdgeInsets.all(8),
-                              color: Color(0xFF006A4E),
+                              color: Color(0xFF06A3DA),
                               child: const Icon(
                                 Icons.videocam,
                                 color: Colors.white,
@@ -245,7 +245,7 @@ class dr_3 extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF349E9E),
+                              color: Color(0xFF06A3DA),
                             ),
                           ),
                         ],
@@ -280,7 +280,7 @@ class dr_3 extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 21,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF349E9E),
+                          color: Color(0xFF06A3DA),
                         ),
                       ),
 
@@ -291,7 +291,7 @@ class dr_3 extends StatelessWidget {
                         children: [
                           const Icon(
                             Icons.calendar_today,
-                            color: Color(0xFF349E9E),
+                            color: Color(0xFF06A3DA),
                             size: 24,
                           ),
                           const SizedBox(width: 10), // Space between icon and text
@@ -313,7 +313,7 @@ class dr_3 extends StatelessWidget {
                         children: [
                           const Icon(
                             Icons.access_time,
-                            color: Color(0xFF349E9E),
+                            color: Color(0xFF06A3DA),
                             size: 24,
                           ),
                           const SizedBox(width: 10), // Space between icon and text
@@ -358,7 +358,7 @@ class dr_3 extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 21,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF349E9E),
+                          color: Color(0xFF06A3DA),
                         ),
                       ),
                       const SizedBox(height: 20), // Space between heading and content
@@ -366,7 +366,7 @@ class dr_3 extends StatelessWidget {
                         children: [
                           const Icon(
                             Icons.local_hospital,
-                            color: Color(0xFF349E9E),
+                            color: Color(0xFF06A3DA),
                             size: 24,
                           ),
                           const SizedBox(width: 10), // Space between icon and text
@@ -385,7 +385,7 @@ class dr_3 extends StatelessWidget {
                         children: [
                           const Icon(
                             Icons.calendar_today,
-                            color: Color(0xFF349E9E),
+                            color: Color(0xFF06A3DA),
                             size: 24,
                           ),
                           const SizedBox(width: 10), // Space between icon and text
@@ -428,7 +428,7 @@ class dr_3 extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 21,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF349E9E),
+                          color: Color(0xFF06A3DA),
                         ),
                       ),
                       const SizedBox(height: 20), // Space between heading and content

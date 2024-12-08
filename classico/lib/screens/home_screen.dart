@@ -117,8 +117,8 @@ class Home_Screen extends StatelessWidget {
                   _drawerItem('Profile', Profile(), context),
                   //_drawerItem('My Doctors', const mydoc(), context),
                   _drawerItem('My Appointments', const myappoint(), context),
-                  _drawerItem('Search Doctors', const SearchDr(), context),
-                  _drawerItem('Contact us', const ContactUs(), context),
+                 // _drawerItem('Search Doctors', const SearchDr(), context),
+                 // _drawerItem('Contact us', const ContactUs(), context),
                   _drawerItem('LOG OUT', const SignInScreen(), context),
                 ],
               );
@@ -213,10 +213,10 @@ class Home_Screen extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const myappoint()),
               );
               break;
-            case 3:
+          //  case 3:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ContactUs()),
+                MaterialPageRoute(builder: (context) => const myappoint()),
               );
               break;
             default:
@@ -227,7 +227,8 @@ class Home_Screen extends StatelessWidget {
           const Icon(Icons.home, color: Colors.white),
           const Icon(Icons.fitness_center, color: Colors.white),
           const Icon(Icons.report, color: Colors.white),
-          const Icon(Icons.phone, color: Colors.white),
+          Icon(Icons.book, color: Colors.white),
+         // const Icon(Icons.phone, color: Colors.white),
         ],
       ),
     );

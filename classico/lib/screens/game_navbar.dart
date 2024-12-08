@@ -121,11 +121,11 @@ class gamenav extends StatelessWidget {
                 ),
               ),
               _drawerItem('Profile', Profile(), context),
-              _drawerItem('Privacy Policy', const Privacypolicy(), context),
-              _drawerItem('My Doctors', const mydoc(), context),
+              //_drawerItem('Privacy Policy', const Privacypolicy(), context),
+              //_drawerItem('My Doctors', const mydoc(), context),
               _drawerItem('My Appointments', const myappoint(), context),
-              _drawerItem('Search Doctors', const SearchDr(), context),
-              _drawerItem('Contact us', const ContactUs(), context),
+              //_drawerItem('Search Doctors', const SearchDr(), context),
+              //_drawerItem('Contact us', const ContactUs(), context),
               _drawerItem('LOG OUT', const myappoint(), context),
             ],
           ),
@@ -189,7 +189,7 @@ class gamenav extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const myappoint()),
               );
               break;
-            case 3:
+            //case 3:
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const ContactUs()),
@@ -203,7 +203,7 @@ class gamenav extends StatelessWidget {
           Icon(Icons.home, color: Colors.white),
           Icon(Icons.fitness_center, color: Colors.white),
           Icon(Icons.book, color: Colors.white),
-          Icon(Icons.phone, color: Colors.white),
+         // Icon(Icons.phone, color: Colors.white),
         ],
       ),
     );
