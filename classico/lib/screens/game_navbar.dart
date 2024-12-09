@@ -1,3 +1,4 @@
+import 'package:Mindlfex/screens/BookAppointmentScreen.dart';
 import 'package:Mindlfex/screens/profile_drawer.dart';
 import 'package:Mindlfex/screens/searchDr.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -186,7 +187,7 @@ class gamenav extends StatelessWidget {
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const myappoint()),
+                MaterialPageRoute(builder: (context) => const BookAppointmentScreen()),
               );
               break;
             //case 3:

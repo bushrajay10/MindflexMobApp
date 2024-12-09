@@ -1,3 +1,4 @@
+import 'package:Mindlfex/screens/BookAppointmentScreen.dart';
 import 'package:Mindlfex/screens/doctor_4.dart';
 import 'package:Mindlfex/screens/game_navbar.dart';
 import 'package:Mindlfex/screens/myAppointments.dart';
@@ -210,7 +211,7 @@ class Home_Screen extends StatelessWidget {
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const myappoint()),
+                MaterialPageRoute(builder: (context) => const BookAppointmentScreen()),
               );
               break;
           //  case 3:
@@ -226,7 +227,7 @@ class Home_Screen extends StatelessWidget {
         items: [
           const Icon(Icons.home, color: Colors.white),
           const Icon(Icons.fitness_center, color: Colors.white),
-          const Icon(Icons.report, color: Colors.white),
+         // const Icon(Icons.report, color: Colors.white),
           Icon(Icons.book, color: Colors.white),
          // const Icon(Icons.phone, color: Colors.white),
         ],
