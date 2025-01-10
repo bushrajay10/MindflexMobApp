@@ -19,7 +19,7 @@ class dr_4 extends StatelessWidget {
             },
           ),
           title: const Text(
-            'DR RIDA NAZ',
+            'DR HIBA GHAZAL',
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,

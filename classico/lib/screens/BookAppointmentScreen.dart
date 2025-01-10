@@ -1,4 +1,7 @@
+import 'package:Mindlfex/screens/FindDoctorScreen.dart';
+import 'package:Mindlfex/screens/Home_Screen.dart';
 import 'package:flutter/material.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -302,6 +305,43 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
             ),
           ),
         ),
+      ),
+
+      // Bottom Navigation Bar
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: Colors.white,
+        color: const Color(0xFF06A3DA),
+        animationDuration: const Duration(milliseconds: 400),
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Home_Screen()),
+              );
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FindDoctorScreen()),
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const BookAppointmentScreen()),
+              );
+              break;
+            default:
+              print("Invalid index");
+          }
+        },
+        items: const [
+          Icon(Icons.home, color: Colors.white),
+          Icon(Icons.medical_services, color: Colors.white), // Medical icon
+          Icon(Icons.book, color: Colors.white),
+
+        ],
       ),
     );
   }

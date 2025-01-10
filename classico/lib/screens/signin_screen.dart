@@ -1,12 +1,9 @@
-import 'package:Mindlfex/screens/doctor_1.dart';
-import 'package:Mindlfex/screens/game_3.dart';
-import 'package:Mindlfex/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:Mindlfex/widget/custom_scaffold.dart';
-import 'package:Mindlfex/screens/forget_passsword_screen.dart';
-import 'package:icons_plus/icons_plus.dart';
-import 'package:Mindlfex/screens/home_screen.dart'; // Import HomeScreen
-import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Mindlfex/screens/DoctorHomeScreen.dart'; // Make sure to import the right home screen
+import 'package:Mindlfex/screens/home_screen.dart'; // If you have a patient home screen
+import 'package:Mindlfex/screens/ForgetPasswordScreen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -17,23 +14,21 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _formSignInKey = GlobalKey<FormState>();
-  final FirebaseAuth _auth = FirebaseAuth.instance; // Initialize FirebaseAuth
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   bool rememberPassword = true;
-  bool _isPasswordVisible = false; // Variable for password visibility
+  bool _isPasswordVisible = false;
 
   String email = '';
   String password = '';
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      child: Column(
+    return Scaffold(
+      body: Column(
         children: [
           const Expanded(
             flex: 1,
-            child: SizedBox(
-              height: 10,
-            ),
+            child: SizedBox(height: 10),
           ),
           Expanded(
             flex: 7,
@@ -63,41 +58,36 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(height: 40.0),
                       TextFormField(
                         onChanged: (value) {
-                          email = value; // Store email input
+                          email = value;
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
+                          } else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+\$').hasMatch(value)) {
+                            return 'Please enter a valid email address';
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           label: const Text('Email'),
                           hintText: 'Enter Email',
-                          hintStyle: const TextStyle(
-                            color: Colors.black26,
-                          ),
+                          hintStyle: const TextStyle(color: Colors.black26),
                           border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
+                            borderSide: const BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
+                            borderSide: const BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                       ),
                       const SizedBox(height: 25.0),
                       TextFormField(
-                        obscureText:
-                        !_isPasswordVisible, // Use the visibility state
+                        obscureText: !_isPasswordVisible,
                         obscuringCharacter: '*',
                         onChanged: (value) {
-                          password = value; // Store password input
+                          password = value;
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -108,32 +98,22 @@ class _SignInScreenState extends State<SignInScreen> {
                         decoration: InputDecoration(
                           label: const Text('Password'),
                           hintText: 'Enter Password',
-                          hintStyle: const TextStyle(
-                            color: Colors.black26,
-                          ),
+                          hintStyle: const TextStyle(color: Colors.black26),
                           border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
+                            borderSide: const BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
-                            ),
+                            borderSide: const BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           suffixIcon: IconButton(
-                            // Eye icon for toggling visibility
                             icon: Icon(
-                              _isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
                             ),
                             onPressed: () {
                               setState(() {
-                                _isPasswordVisible =
-                                !_isPasswordVisible; // Toggle password visibility
+                                _isPasswordVisible = !_isPasswordVisible;
                               });
                             },
                           ),
@@ -149,27 +129,29 @@ class _SignInScreenState extends State<SignInScreen> {
                                 value: rememberPassword,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    rememberPassword =
-                                    value!; // Update checkbox state
+                                    rememberPassword = value!;
                                   });
                                 },
                                 activeColor: const Color(0xFF0C4444),
                               ),
                               const Text(
                                 'Remember me',
-                                style: TextStyle(
-                                  color: Colors.black45,
-                                ),
+                                style: TextStyle(color: Colors.black45),
                               ),
                             ],
                           ),
                           GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ForgetPasswordScreen(),
+                                ),
+                              );
+                            },
                             child: const Text(
                               'Forget password?',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF06A3DA),
-                              ),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF06A3DA)),
                             ),
                           ),
                         ],
@@ -179,46 +161,44 @@ class _SignInScreenState extends State<SignInScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () async {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                const Home_Screen(), // Use HomeScreen
-                              ),
-                            );
+                            if (_formSignInKey.currentState!.validate()) {
+                              try {
+                                // Sign in with Firebase Authentication
+                                await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+                                User? user = FirebaseAuth.instance.currentUser;
+                                if (user != null) {
+                                  // Fetch user data from Firestore
+                                  DocumentSnapshot userData = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+                                  if (userData.exists) {
+                                    String role = userData['role'];
+
+                                    // Navigate based on user role
+                                    if (role == 'Doctor') {
+                                      Navigator.pushReplacementNamed(context, '/doctorHome');
+                                    } else if (role == 'Patient') {
+                                      Navigator.pushReplacementNamed(context, '/patientHome');
+                                    } else {
+                                      // Handle other roles or default case
+                                    }
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User data not found.')));
+                                  }
+                                }
+                              } on FirebaseAuthException catch (e) {
+                                // Handle specific FirebaseAuth errors
+                                if (e.code == 'user-not-found') {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('No user found for that email.')));
+                                } else if (e.code == 'wrong-password') {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Incorrect password.')));
+                                } else if (e.code == 'invalid-email') {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid email format.')));
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message ?? 'Error signing in')));
+                                }
+                              }
+                            }
                           },
-                          //   if (_formSignInKey.currentState!.validate() &&
-                          //       rememberPassword) {
-                          //     try {
-                          //       // Sign in user
-                          //       UserCredential userCredential =
-                          //           await _auth.signInWithEmailAndPassword(
-                          //         email: email,
-                          //         password: password,
-                          //       );
-                          //       // Navigate to home screen on success
-                          //       Navigator.pushReplacement(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //           builder: (context) =>
-                          //               const Home_Screen(), // Use HomeScreen
-                          //         ),
-                          //       );
-                          //     } on FirebaseAuthException catch (e) {
-                          //       ScaffoldMessenger.of(context).showSnackBar(
-                          //         SnackBar(
-                          //             content: Text(
-                          //                 e.message ?? 'Error signing in')),
-                          //       );
-                          //     }
-                          //   } else if (!rememberPassword) {
-                          //     ScaffoldMessenger.of(context).showSnackBar(
-                          //       const SnackBar(
-                          //           content: Text(
-                          //               'Please agree to the processing of personal data')),
-                          //     );
-                          //   }
-                          // },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: Colors.orange,
@@ -230,65 +210,17 @@ class _SignInScreenState extends State<SignInScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.7,
-                              color: Colors.orange.withOpacity(0.5),
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 10),
-                            child: Text(
-                              '',
-                              style: TextStyle(
-                                color: Colors.black45,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.7,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 25.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // Logo(Logos.facebook_f),
-                          //  Logo(Logos.twitter),
-                          //  Logo(Logos.google),
-                          //Logo(Logos.apple),
-                        ],
-                      ),
-                      const SizedBox(height: 25.0),
-                      // Don't have an account
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Don\'t have an account? ',
-                            style: TextStyle(
-                              color: Colors.black45,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                  const SignUpScreen(), // Navigate to Sign Up screen
-                                ),
-                              );
+                          const Text('Don\'t have an account? ', style: TextStyle(color: Colors.black45)),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/signup');
                             },
                             child: const Text(
                               'Sign up',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF06A3DA),
+                                decoration: TextDecoration.underline,
                               ),
                             ),
                           ),

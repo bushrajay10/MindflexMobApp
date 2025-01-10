@@ -1,23 +1,12 @@
 import 'package:Mindlfex/screens/BookAppointmentScreen.dart';
-import 'package:Mindlfex/screens/doctor_4.dart';
-import 'package:Mindlfex/screens/game_navbar.dart';
-import 'package:Mindlfex/screens/myAppointments.dart';
-import 'package:Mindlfex/screens/myDoc.dart';
-import 'package:Mindlfex/screens/searchdr.dart';
-import 'package:Mindlfex/screens/profile_drawer.dart';
-import 'package:Mindlfex/screens/PrivacyPolicy.dart';
-import 'package:Mindlfex/screens/signin_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Add Firestore import
+import 'package:Mindlfex/screens/DoctorHomeScreen.dart';
+import 'package:Mindlfex/screens/video_player_screen.dart';  // Import the VideoPlayerScreen
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'contactus.dart';
-import 'doctor_1.dart';
-import 'doctor_2.dart';
-import 'doctor_3.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class Home_Screen extends StatelessWidget {
-  const Home_Screen({Key? key}) : super(key: key); // Removed 'username' parameter
+  const Home_Screen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,72 +50,6 @@ class Home_Screen extends StatelessWidget {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Container(
-          color: Colors.white,
-          child: FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance
-                .collection('users')
-                .doc(FirebaseAuth.instance.currentUser?.uid)
-                .get(), // Get user data from Firestore
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              }
-              if (!snapshot.hasData || snapshot.data == null) {
-                return Center(child: Text('No user data found.'));
-              }
-
-              // Fetch the username from Firestore document
-              var userData = snapshot.data!.data() as Map<String, dynamic>;
-              String username = userData['username'] ?? 'Guest';  // Ensure this is set correctly
-
-              return ListView(
-                children: [
-                  DrawerHeader(
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 50,
-                          height: 50,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xFF06A3DA),
-                          ),
-                          child: const Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          username,
-                          style: const TextStyle(
-                            fontSize: 24,
-                            color: Color(0xFF06A3DA),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  _drawerItem('Home', const Home_Screen(), context),
-                  _drawerItem('Profile', Profile(), context),
-                  //_drawerItem('My Doctors', const mydoc(), context),
-                  _drawerItem('My Appointments', const myappoint(), context),
-                 // _drawerItem('Search Doctors', const SearchDr(), context),
-                 // _drawerItem('Contact us', const ContactUs(), context),
-                  _drawerItem('LOG OUT', const SignInScreen(), context),
-                ],
-              );
-            },
-          ),
-        ),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -141,7 +64,7 @@ class Home_Screen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            // Calendar View
+            // Calendar View Placeholder
             Container(
               height: 200,
               decoration: BoxDecoration(
@@ -170,7 +93,7 @@ class Home_Screen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text(
-              'OUR TOP DOCTORS',
+              'Fitness Exercises',
               style: TextStyle(
                 color: Color(0xFF06A3DA),
                 fontSize: 20,
@@ -178,15 +101,51 @@ class Home_Screen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            // Doctor Cards
-            _doctorCard(context, 'DR MARYAM NAEEM', 'CLINICAL PSYCHOLOGIST', dr_1()),
-            const SizedBox(height: 20),
-            _doctorCard(context, 'DR MARIA ALI', 'PHYSIOTHERAPIST', dr_2()),
-            const SizedBox(height: 20),
-            _doctorCard(context, 'DR NAMEERA SIDDIQUI', 'PHYSIOTHERAPIST', dr_3()),
-            const SizedBox(height: 20),
-            _doctorCard(context, 'DR HIBA GHAZAL', 'ORTHOPEDIC', dr_4()),
-            const SizedBox(height: 20),
+            // Fetching and displaying exercises from Firestore
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('Exercises').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text('No fitness exercises found.'));
+                }
+
+                final exercises = snapshot.data!.docs;
+
+                return Column(
+                  children: exercises.map((exercise) {
+                    // Ensure the document data is being accessed properly
+                    Map<String, dynamic> exerciseData = exercise.data() as Map<String, dynamic>;
+
+                    String title = exerciseData['title'] ?? 'No title available';
+                    String description = exerciseData['description'] ?? 'No description available';
+                    String videoUrl = exerciseData['videoUrl'] ?? '';
+
+                    print('Exercise data: title=$title, description=$description, videoUrl=$videoUrl');
+
+                    return Column(
+                      children: [
+                        _exerciseCard(
+                          context,
+                          title,
+                          description,
+                          videoUrl,
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    );
+                  }).toList(),
+                );
+              },
+            )
+
           ],
         ),
       ),
@@ -194,6 +153,11 @@ class Home_Screen extends StatelessWidget {
         backgroundColor: Colors.white,
         color: const Color(0xFF06A3DA),
         animationDuration: const Duration(milliseconds: 400),
+        items: const [
+          Icon(Icons.home, color: Colors.white),
+          Icon(Icons.medical_services, color: Colors.white),
+          Icon(Icons.book, color: Colors.white),
+        ],
         onTap: (index) {
           switch (index) {
             case 0:
@@ -203,56 +167,36 @@ class Home_Screen extends StatelessWidget {
               );
               break;
             case 1:
+            // Handle the tap event for other tabs
               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => gamenav()),
-              );
+                  context,
+                  MaterialPageRoute(builder: (context) => const DoctorHomeScreen()),
+          );
               break;
             case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const BookAppointmentScreen()),
-              );
-              break;
-          //  case 3:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const myappoint()),
-              );
+            // Handle the tap event for other tabs
+          Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const BookAppointmentScreen()),
+          );
               break;
             default:
               print("Invalid index");
           }
         },
-        items: [
-          const Icon(Icons.home, color: Colors.white),
-          const Icon(Icons.fitness_center, color: Colors.white),
-         // const Icon(Icons.report, color: Colors.white),
-          Icon(Icons.book, color: Colors.white),
-         // const Icon(Icons.phone, color: Colors.white),
-        ],
       ),
     );
   }
 
-  Widget _drawerItem(String title, Widget page, BuildContext context) {
-    return ListTile(
-      title: Text(title),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => page),
-        );
-      },
-    );
-  }
-
-  Widget _doctorCard(BuildContext context, String name, String specialization, Widget doctorPage) {
+  Widget _exerciseCard(BuildContext context, String title, String description, String videoUrl) {
     return InkWell(
       onTap: () {
+        // Navigate to VideoPlayerScreen with the video URL
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => doctorPage),
+          MaterialPageRoute(
+            builder: (context) => VideoPlayerScreen(videoUrl: videoUrl),
+          ),
         );
       },
       child: Container(
@@ -277,7 +221,7 @@ class Home_Screen extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 color: Colors.orangeAccent,
                 child: const Icon(
-                  Icons.person,
+                  Icons.fitness_center,
                   color: Colors.white,
                 ),
               ),
@@ -287,19 +231,19 @@ class Home_Screen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name,
+                  title,
                   style: const TextStyle(
                     fontSize: 16,
                     color: Color(0xFF06A3DA),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 6),
                 Text(
-                  specialization,
+                  description,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    fontSize: 14,
+                    color: Colors.black54,
                   ),
                 ),
               ],
@@ -309,4 +253,5 @@ class Home_Screen extends StatelessWidget {
       ),
     );
   }
+
 }

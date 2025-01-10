@@ -138,7 +138,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                 MaterialPageRoute(builder: (context) => const myappoint()),
               );
               break;
-            case 3:
+           // case 3:
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const ContactUsScreen(
@@ -154,7 +154,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
           Icon(Icons.home, color: Colors.white),
           Icon(Icons.fitness_center, color: Colors.white),
           Icon(Icons.report, color: Colors.white),
-          Icon(Icons.phone, color: Colors.white),
+        //  Icon(Icons.phone, color: Colors.white),
         ],
       ),
     );
@@ -179,9 +179,9 @@ class PendingAppointmentsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pendingAppointments = [
-      {'name': 'John Doe', 'appointmentDate': '2024-11-10 10:00 AM'},
-      {'name': 'Jane Smith', 'appointmentDate': '2024-11-10 11:30 AM'},
-      {'name': 'Alex Johnson', 'appointmentDate': '2024-11-11 9:00 AM'},
+      {'name': 'bushra jamal', 'appointmentDate': '2024-11-10 10:00 AM'},
+      {'name': 'Nameera', 'appointmentDate': '2024-11-10 11:30 AM'},
+      {'name': 'maryam', 'appointmentDate': '2024-11-11 9:00 AM'},
     ];
 
     return ListView.builder(

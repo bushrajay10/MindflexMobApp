@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:Mindlfex/screens/FindDoctorScreen.dart';
 class dr_1 extends StatelessWidget {
   const dr_1({Key? key}) : super(key: key);
 
@@ -19,7 +19,7 @@ class dr_1 extends StatelessWidget {
             },
           ),
           title: const Text(
-            'DR FARHAN SIDDIQUE',
+            'DR Maryam Naeem',
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,

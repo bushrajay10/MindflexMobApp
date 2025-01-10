@@ -19,7 +19,7 @@ class dr_3 extends StatelessWidget {
             },
           ),
           title: const Text(
-            'DR FATIMA KHAN',
+            'DR NAMEERA SIDDIQUI',
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,

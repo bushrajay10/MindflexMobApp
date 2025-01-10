@@ -19,7 +19,7 @@ class dr_2 extends StatelessWidget {
             },
           ),
           title: const Text(
-            'DR SHAIZA ALI',
+            'DR Maria ali',
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,

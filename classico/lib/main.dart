@@ -1,5 +1,6 @@
 import 'package:Mindlfex/screens/BookAppointmentScreen.dart';
 import 'package:Mindlfex/screens/DoctorHomeScreen.dart';
+import 'package:Mindlfex/screens/FindDoctorScreen.dart';
 import 'package:Mindlfex/screens/PrivacyPolicy.dart';
 import 'package:Mindlfex/screens/game_1.dart';
 import 'package:Mindlfex/screens/game_navbar.dart';
@@ -32,7 +33,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(), //yh const splashscreen() ayega
+      home: const SignInScreen(), // Your SignInScreen as the home
+      routes: {
+        '/signup': (context) => const SignUpScreen(), // Define the route for SignUpScreen
+      },
     );
   }
 }
@@ -140,10 +144,7 @@ class _PatientFormState extends State<PatientForm> {
                   value: gender,
                   decoration: const InputDecoration(labelText: "Gender"),
                   items: <String>['Male', 'Female'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
+                    return DropdownMenuItem<String>(value: value, child: Text(value));
                   }).toList(),
                   onChanged: (newValue) {
                     setState(() {
@@ -197,10 +198,7 @@ class _PatientFormState extends State<PatientForm> {
                   value: previousHealthHistory,
                   decoration: const InputDecoration(labelText: "Previous Health History"),
                   items: <String>['Blood Pressure', 'Sugar', 'Arthritis'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
+                    return DropdownMenuItem<String>(value: value, child: Text(value));
                   }).toList(),
                   onChanged: (newValue) {
                     setState(() {
@@ -219,7 +217,7 @@ class _PatientFormState extends State<PatientForm> {
 
                 // Area of Stroke (Hand, Shoulder, Trunk, etc.)
                 TextFormField(
-                  decoration: const InputDecoration(labelText: "Enter Area of Stroke (Hand, Shoulder,trunk etc.)"),
+                  decoration: const InputDecoration(labelText: "Enter Area of Stroke (Hand, Shoulder, Trunk etc.)"),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Please specify the stroke area";
@@ -243,7 +241,7 @@ class _PatientFormState extends State<PatientForm> {
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder:(context)=> const  Home_Screen())
+                            MaterialPageRoute(builder: (context) => const Home_Screen())
                         );
 
                         // If the form is valid, submit the form
@@ -255,7 +253,8 @@ class _PatientFormState extends State<PatientForm> {
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white, backgroundColor: Colors.orange,
                       padding: const EdgeInsets.symmetric(vertical: 16), // Adjust height
-                      textStyle: const TextStyle(fontSize: 18),),
+                      textStyle: const TextStyle(fontSize: 18),
+                    ),
                     child: const Text("Submit"),
                   ),
                 ),
@@ -299,7 +298,7 @@ class _DoctorFormState extends State<DoctorForm> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: width * 0.1),
           child: Form(
-            key: formKey,
+            key: formKey, // Assign formKey here
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -307,10 +306,10 @@ class _DoctorFormState extends State<DoctorForm> {
                 // Personal Information Title
                 Center(
                   child: Text(
-                    "Personal Information",
+                    "Doctor's Information",
                     style: TextStyle(
-                      fontSize: width * 0.07,
-                      color: const Color(0xFF167D7D),
+                      fontSize: width * 0.07, // Responsive font size based on screen width
+                      color: const Color(0xFF06A3DA),
                       fontWeight: FontWeight.w900,
                     ),
                   ),
@@ -319,67 +318,22 @@ class _DoctorFormState extends State<DoctorForm> {
                   child: Text(
                     "Let us Know About You",
                     style: TextStyle(
-                      fontSize: width * 0.045,
-                      color:  Colors.orange,
+                      fontSize: width * 0.045, // Smaller responsive font for subtitle
+                      color: const Color(0xFF06A3DA),
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                // First Name
+                // Qualification
                 TextFormField(
-                  decoration: const InputDecoration(labelText: "Enter First Name"),
+                  decoration: const InputDecoration(labelText: "Enter Your Qualification"),
                   validator: (value) {
-                    if (value!.isEmpty || !RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
-                      return "Please enter a valid first name";
+                    if (value!.isEmpty) {
+                      return "Please enter a valid qualification";
                     }
                     return null;
                   },
                 ),
-
-                SizedBox(height: height * 0.04),
-
-                // Last Name
-                TextFormField(
-                  decoration: const InputDecoration(labelText: "Enter Last Name"),
-                  validator: (value) {
-                    if (value!.isEmpty || !RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
-                      return "Please enter a valid last name";
-                    }
-                    return null;
-                  },
-                ),
-
-                SizedBox(height: height * 0.04),
-
-                // Qualification Dropdown
-                DropdownButtonFormField<String>(
-                  value: qualification,
-                  decoration: const InputDecoration(labelText: "Qualification"),
-                  items: <String>[
-                    'Bachelors of Physical Therapy (BPT)',
-                    'Doctor of Physical Therapy (DPT)',
-                    'Master of Science in Physiotherapy (MSPT)',
-                    'PhD in Physiotherapy'
-                  ].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value, style: TextStyle(fontSize: width * 0.035)), // Responsive text size
-                    );
-                  }).toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      qualification = newValue;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null) {
-                      return "Please select a qualification";
-                    }
-                    return null;
-                  },
-                ),
-
                 SizedBox(height: height * 0.04),
 
                 // Gender Dropdown
@@ -387,14 +341,11 @@ class _DoctorFormState extends State<DoctorForm> {
                   value: gender,
                   decoration: const InputDecoration(labelText: "Gender"),
                   items: <String>['Male', 'Female'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
+                    return DropdownMenuItem<String>(value: value, child: Text(value));
                   }).toList(),
                   onChanged: (newValue) {
                     setState(() {
-                      gender = newValue;
+                      gender = newValue!;
                     });
                   },
                   validator: (value) {
@@ -407,84 +358,12 @@ class _DoctorFormState extends State<DoctorForm> {
 
                 SizedBox(height: height * 0.04),
 
-                // Area of Specialization
+                // Available Time Slot
                 TextFormField(
-                  decoration: const InputDecoration(labelText: "Area of Specialization"),
-                  validator: (value) {
-                    if (value!.isEmpty || !RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
-                      return "Please enter a valid specialization";
-                    }
-                    return null;
-                  },
-                ),
-
-                SizedBox(height: height * 0.04),
-
-                // Years of Experience
-                // Years of Experience
-                TextFormField(
-                  decoration: const InputDecoration(labelText: "Years of Experience in the Field"),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: false), // Only allows integers
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly, // Only digits allowed
-                    LengthLimitingTextInputFormatter(2),    // Limit input to 2 digits
-                  ],
-                  validator: (value) {
-                    if (value!.isEmpty || int.tryParse(value) == null || int.parse(value) <= 0 || int.parse(value) > 99) {
-                      return "Please enter a valid number between 1 and 99";
-                    }
-                    return null;
-                  },
-                ),
-
-                SizedBox(height: height * 0.04),
-
-                // Organization Name
-                TextFormField(
-                  decoration: const InputDecoration(labelText: "Enter Organization Name"),
-                  validator: (value) {
-                    if (value!.isEmpty || !RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
-                      return "Please enter a valid organization name (no numbers or special characters)";
-                    }
-                    return null;
-                  },
-                ),
-
-                SizedBox(height: height * 0.04),
-
-                // Organization Email
-                TextFormField(
-                  decoration: const InputDecoration(labelText: "Organization Email"),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value!.isEmpty || !RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
-                      return "Please enter a valid email address";
-                    }
-                    return null;
-                  },
-                ),
-
-                SizedBox(height: height * 0.04),
-
-                // Employee ID
-                TextFormField(
-                  decoration: const InputDecoration(labelText: "Employee ID"),
+                  decoration: const InputDecoration(labelText: "Available Time Slot (e.g., 9 AM - 5 PM)"),
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "Please enter a valid employee ID";
-                    }
-                    return null;
-                  },
-                ),
-
-                SizedBox(height: height * 0.04),
-
-                // Available Time Slots
-                TextFormField(
-                  decoration: const InputDecoration(labelText: "Available Time Slots"),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter your available time slots";
+                      return "Please specify your available time slot";
                     }
                     return null;
                   },
@@ -494,16 +373,16 @@ class _DoctorFormState extends State<DoctorForm> {
 
                 // Available Days
                 TextFormField(
-                  decoration: const InputDecoration(labelText: "Available Days"),
+                  decoration: const InputDecoration(labelText: "Available Days (e.g., Monday - Friday)"),
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "Please enter your available days";
+                      return "Please specify your available days";
                     }
                     return null;
                   },
                 ),
 
-                SizedBox(height: height * 0.03),
+                SizedBox(height: height * 0.04),
 
                 // Submit Button
                 SizedBox(
@@ -511,6 +390,11 @@ class _DoctorFormState extends State<DoctorForm> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => const Home_Screen())
+                        );
+
+                        // If the form is valid, submit the form
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Form Submitted')),
                         );
@@ -518,7 +402,7 @@ class _DoctorFormState extends State<DoctorForm> {
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white, backgroundColor: Colors.orange,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16), // Adjust height
                       textStyle: const TextStyle(fontSize: 18),
                     ),
                     child: const Text("Submit"),
