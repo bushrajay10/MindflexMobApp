@@ -1,7 +1,34 @@
 import 'package:Mindlfex/screens/update_profile.dart';
 import 'package:flutter/material.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  // Controllers for each field
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _ageController = TextEditingController();
+  TextEditingController _genderController = TextEditingController();
+  TextEditingController _strokeYearsController = TextEditingController();
+  TextEditingController _healthHistoryController = TextEditingController();
+  TextEditingController _areaOfStrokeController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize controllers with current data (example data here)
+    _nameController.text = 'Bushra Jamal';
+    _ageController.text = '22';
+    _genderController.text = 'Female';
+    _strokeYearsController.text = '5';
+    _healthHistoryController.text = 'Blood Pressure';
+    _areaOfStrokeController.text = 'Hand & Trunk';
+    _phoneController.text = '03322-888888';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +66,7 @@ class Profile extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  'Bushra Jamal',
+                  'Bushra Jamal', // You can replace this with dynamic data
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -69,53 +96,53 @@ class Profile extends StatelessWidget {
                 child: Column(
                   children: [
                     _buildProfileItem(
-                      icon: Icons.lock_outline,
-                      label: 'Password',
-                      value: 'Update',
-                      onTap: () {},
-                    ),
-                    _buildProfileItem(
                       icon: Icons.person_outline_outlined,
                       label: 'Name',
-                      value: 'bushra jamal',
+                      controller: _nameController,
                     ),
                     _buildProfileItem(
                       icon: Icons.person_outline_outlined,
                       label: 'Age',
-                      value: '22',
+                      controller: _ageController,
                     ),
                     _buildProfileItem(
                       icon: Icons.female,
                       label: 'Gender',
-                      value: 'Female',
+                      controller: _genderController,
                     ),
                     _buildProfileItem(
                       icon: Icons.health_and_safety_outlined,
-                      label: 'How Many Years Of Stroke:',
-                      value: '5',
+                      label: 'How Many Years Of Stroke',
+                      controller: _strokeYearsController,
                     ),
                     _buildProfileItem(
                       icon: Icons.health_and_safety_outlined,
-                      label: 'Health History:',
-                      value: 'Blood Pressure',
+                      label: 'Health History',
+                      controller: _healthHistoryController,
                     ),
                     _buildProfileItem(
                       icon: Icons.health_and_safety_outlined,
                       label: 'Area Of Stroke',
-                      value: 'Hand & Trunk',
+                      controller: _areaOfStrokeController,
                     ),
                     _buildProfileItem(
                       icon: Icons.phone,
                       label: 'Phone NO.',
-                      value: '03322-888888',
+                      controller: _phoneController,
                     ),
                     SizedBox(height: 30), // Add some spacing at the end
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const update_profile()), // Navigate to SearchDr
-                        );
+                        // Logic to update profile in Firestore or wherever you store data
+                        // For now, just print the updated data
+                        print('Updated Profile:');
+                        print('Name: ${_nameController.text}');
+                        print('Age: ${_ageController.text}');
+                        print('Gender: ${_genderController.text}');
+                        print('Stroke Years: ${_strokeYearsController.text}');
+                        print('Health History: ${_healthHistoryController.text}');
+                        print('Area of Stroke: ${_areaOfStrokeController.text}');
+                        print('Phone: ${_phoneController.text}');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
@@ -126,7 +153,7 @@ class Profile extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        'Update',
+                        'Save',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -145,34 +172,38 @@ class Profile extends StatelessWidget {
     );
   }
 
-  // Helper method for building each profile item row
-  Widget _buildProfileItem(
-      {required IconData icon, required String label, required String value, VoidCallback? onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
-        child: Row(
-          children: [
-            Icon(icon, color: Color(0xFF06A3DA)),
-            SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                label,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[600]),
+  // Helper method for building each editable profile item row
+  Widget _buildProfileItem({
+    required IconData icon,
+    required String label,
+    required TextEditingController controller,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      child: Row(
+        children: [
+          Icon(icon, color: Color(0xFF06A3DA)),
+          SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              label,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[600]),
+            ),
+          ),
+          Expanded(
+            child: TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                hintText: 'Enter $label',
+                border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.symmetric(vertical: 8.0),
               ),
             ),
-            Text(
-              value,
-              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-            ),
-            if (onTap != null)
-              Icon(Icons.chevron_right, color: Colors.grey), // Add arrow icon if clickable
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

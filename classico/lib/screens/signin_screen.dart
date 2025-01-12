@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Mindlfex/screens/DoctorHomeScreen.dart'; // Make sure to import the right home screen
-import 'package:Mindlfex/screens/home_screen.dart'; // If you have a patient home screen
-import 'package:Mindlfex/screens/ForgetPasswordScreen.dart';
+import 'package:Mindlfex/screens/ForgetPasswordScreen.dart'; // Import your ForgetPasswordScreen
+import 'package:Mindlfex/screens/DoctorHomeScreen.dart'; // Ensure you have the correct home screen for doctor
+import 'package:Mindlfex/screens/home_screen.dart'; // Ensure you have the correct home screen for patient
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -175,9 +175,15 @@ class _SignInScreenState extends State<SignInScreen> {
 
                                     // Navigate based on user role
                                     if (role == 'Doctor') {
-                                      Navigator.pushReplacementNamed(context, '/doctorHome');
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => DoctorHomeScreen()), // Change to DoctorHomeScreen
+                                      );
                                     } else if (role == 'Patient') {
-                                      Navigator.pushReplacementNamed(context, '/patientHome');
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => HomeScreen()), // Change to HomeScreen
+                                      );
                                     } else {
                                       // Handle other roles or default case
                                     }

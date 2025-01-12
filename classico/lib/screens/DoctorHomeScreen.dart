@@ -1,3 +1,4 @@
+import 'package:Mindlfex/screens/SetYourTimeScreen.dart';
 import 'package:Mindlfex/screens/game_navbar.dart';
 import 'package:Mindlfex/screens/myAppointments.dart';
 import 'package:Mindlfex/screens/signin_screen.dart';
@@ -90,11 +91,11 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                   SizedBox(height: 10),
                   // You can dynamically update the appointments here
                   Text(
-                    'John Doe - 10:00 AM',
+                    'Bushra Jamal - 10:00 AM',
                     style: TextStyle(fontSize: 16),
                   ),
                   Text(
-                    'Jane Smith - 11:30 AM',
+                    'Maryam - 11:30 AM',
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
@@ -129,15 +130,10 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => gamenav()),
+                MaterialPageRoute(builder: (context) => SetYourTimeScreen()),
               );
               break;
-            case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const myappoint()),
-              );
-              break;
+
            // case 3:
               Navigator.push(
                 context,
@@ -152,9 +148,9 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
         },
         items: const [
           Icon(Icons.home, color: Colors.white),
-          Icon(Icons.fitness_center, color: Colors.white),
-          Icon(Icons.report, color: Colors.white),
-        //  Icon(Icons.phone, color: Colors.white),
+          Icon(Icons.timer, color: Colors.white),
+
+          //  Icon(Icons.phone, color: Colors.white),
         ],
       ),
     );

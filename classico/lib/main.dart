@@ -2,6 +2,7 @@ import 'package:Mindlfex/screens/BookAppointmentScreen.dart';
 import 'package:Mindlfex/screens/DoctorHomeScreen.dart';
 import 'package:Mindlfex/screens/FindDoctorScreen.dart';
 import 'package:Mindlfex/screens/PrivacyPolicy.dart';
+import 'package:Mindlfex/screens/SetYourTimeScreen.dart';
 import 'package:Mindlfex/screens/game_1.dart';
 import 'package:Mindlfex/screens/game_navbar.dart';
 import 'package:Mindlfex/screens/myAppointments.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const SignInScreen(), // Your SignInScreen as the home
+      home: const Home_Screen(), // Your SignInScreen as the home
       routes: {
         '/signup': (context) => const SignUpScreen(), // Define the route for SignUpScreen
       },

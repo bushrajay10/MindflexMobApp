@@ -1,5 +1,6 @@
 import 'package:Mindlfex/screens/BookAppointmentScreen.dart';
 import 'package:Mindlfex/screens/DoctorHomeScreen.dart';
+import 'package:Mindlfex/screens/FindDoctorScreen.dart';
 import 'package:Mindlfex/screens/video_player_screen.dart';  // Import the VideoPlayerScreen
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,7 @@ class Home_Screen extends StatelessWidget {
               ),
               child: Center(
                 child: const Text(
-                  'Calendar Placeholder',
+                  'No appointments',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -84,7 +85,7 @@ class Home_Screen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text(
-              'How can we help you today?',
+              'Start Your fitness Journey with Mindflex!',
               style: TextStyle(
                 color: Color(0xFF06A3DA),
                 fontSize: 22,
@@ -93,7 +94,7 @@ class Home_Screen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text(
-              'Fitness Exercises',
+              'Exercises',
               style: TextStyle(
                 color: Color(0xFF06A3DA),
                 fontSize: 20,
@@ -170,7 +171,7 @@ class Home_Screen extends StatelessWidget {
             // Handle the tap event for other tabs
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const DoctorHomeScreen()),
+                  MaterialPageRoute(builder: (context) => const FindDoctorScreen()),
           );
               break;
             case 2:
