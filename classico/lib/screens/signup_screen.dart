@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Mindlfex/screens/signin_screen.dart';
-import 'package:Mindlfex/screens/home_screen.dart';
+import 'package:Mindlfex/screens/Home_screen.dart';
 import 'package:Mindlfex/screens/DoctorHomeScreen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -211,16 +211,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     'uid': user.uid,
                                   });
 
-                                  // Navigate to the appropriate screen
-                                  Navigator.pushReplacementNamed(context, '/home');
+                                  // Navigate to the appropriate screen based on role
+                                  if (selectedRole == 'Patient') {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => Home_Screen()), // Patient Home Screen
+                                    );
+                                  } else if (selectedRole == 'Doctor') {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => DoctorHomeScreen()), // Doctor Home Screen
+                                    );
+                                  }
                                 }
                               } catch (e) {
                                 print('Error during sign up: $e');
                               }
-
                             }
                           },
-
                           child: const Text('Sign Up'),
                         ),
                       ),

@@ -10,7 +10,7 @@ import 'game_2.dart';
 import 'game_3.dart';
 import 'game_4.dart';
 import 'game_5.dart';
-import 'home_screen.dart';
+import 'Home_screen.dart';
 import 'myAppointments.dart';
 import 'myDoc.dart';
 import 'DoctorHomeScreen.dart';

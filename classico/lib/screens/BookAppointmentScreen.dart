@@ -1,5 +1,5 @@
 import 'package:Mindlfex/screens/FindDoctorScreen.dart';
-import 'package:Mindlfex/screens/Home_Screen.dart';
+import 'package:Mindlfex/screens/Home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 

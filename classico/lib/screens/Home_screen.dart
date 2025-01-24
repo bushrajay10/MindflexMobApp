@@ -1,8 +1,9 @@
 import 'package:Mindlfex/screens/BookAppointmentScreen.dart';
 import 'package:Mindlfex/screens/DoctorHomeScreen.dart';
 import 'package:Mindlfex/screens/FindDoctorScreen.dart';
-import 'package:Mindlfex/screens/video_player_screen.dart';  // Import the VideoPlayerScreen
+import 'package:Mindlfex/screens/video_player_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -11,6 +12,14 @@ class Home_Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsive font size
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Define a function for adaptive text size
+    double getFontSize(double baseSize) {
+      return baseSize * (screenWidth / 375);  // 375 is the width of a standard iPhone 6 screen
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -23,16 +32,16 @@ class Home_Screen extends StatelessWidget {
               return IconButton(
                 icon: const Icon(Icons.menu, color: Colors.white),
                 onPressed: () {
-                  Scaffold.of(context).openDrawer();
+                  Scaffold.of(context).openDrawer();  // Open the drawer when the icon is pressed
                 },
               );
             },
           ),
-          title: const Text(
+          title: Text(
             'Home',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 24,
+              fontSize: getFontSize(24),
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
@@ -51,16 +60,93 @@ class Home_Screen extends StatelessWidget {
           ],
         ),
       ),
+      drawer: Drawer(
+        child: FutureBuilder<DocumentSnapshot>(
+          future: FirebaseFirestore.instance
+              .collection('users') // Replace with your users collection
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+
+            if (!snapshot.hasData || !snapshot.data!.exists) {
+              return const Center(child: Text('No user data available.'));
+            }
+
+            var userData = snapshot.data!.data() as Map<String, dynamic>;
+            String username = userData['username'] ?? 'No username available';
+
+            return ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                  accountName: Text(
+                    username,
+                    style: TextStyle(
+                      fontSize: getFontSize(20),  // Adjusted font size based on screen width
+                    ),
+                  ),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: const Icon(
+                      Icons.person,
+                      color: Color(0xFF06A3DA),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF06A3DA),
+                  ), accountEmail: null,
+                ),
+                ListTile(
+                  title: Text(
+                    'Profile',
+                    style: TextStyle(
+                      fontSize: getFontSize(16),
+                    ),
+                  ),
+                  leading: const Icon(Icons.account_circle),
+                  onTap: () {
+                    // Navigate to Profile screen if implemented
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Sign Out',
+                    style: TextStyle(
+                      fontSize: getFontSize(16),
+                    ),
+                  ),
+                  leading: const Icon(Icons.exit_to_app),
+                  onTap: () async {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacementNamed(context, '/signin');
+                  },
+                ),
+              ],
+            );
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Today\'s Appointments',
               style: TextStyle(
-                color: Color(0xFF06A3DA),
-                fontSize: 24,
+                color: const Color(0xFF06A3DA),
+                fontSize: getFontSize(24),  // Adjusted font size based on screen width
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -71,10 +157,10 @@ class Home_Screen extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
-                border: Border.all(color: Color(0xFF06A3DA), width: 2),
+                border: Border.all(color: const Color(0xFF06A3DA), width: 2),
               ),
-              child: Center(
-                child: const Text(
+              child: const Center(
+                child: Text(
                   'No appointments',
                   style: TextStyle(
                     color: Colors.black,
@@ -84,20 +170,20 @@ class Home_Screen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
+            Text(
               'Start Your fitness Journey with Mindflex!',
               style: TextStyle(
-                color: Color(0xFF06A3DA),
-                fontSize: 22,
+                color: const Color(0xFF06A3DA),
+                fontSize: getFontSize(22),  // Adjusted font size based on screen width
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
+            Text(
               'Exercises',
               style: TextStyle(
-                color: Color(0xFF06A3DA),
-                fontSize: 20,
+                color: const Color(0xFF06A3DA),
+                fontSize: getFontSize(20),  // Adjusted font size based on screen width
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -145,8 +231,7 @@ class Home_Screen extends StatelessWidget {
                   }).toList(),
                 );
               },
-            )
-
+            ),
           ],
         ),
       ),
@@ -168,18 +253,16 @@ class Home_Screen extends StatelessWidget {
               );
               break;
             case 1:
-            // Handle the tap event for other tabs
               Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const FindDoctorScreen()),
-          );
+                context,
+                MaterialPageRoute(builder: (context) => const FindDoctorScreen()),
+              );
               break;
             case 2:
-            // Handle the tap event for other tabs
-          Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const BookAppointmentScreen()),
-          );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const BookAppointmentScreen()),
+              );
               break;
             default:
               print("Invalid index");
@@ -233,17 +316,17 @@ class Home_Screen extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Color(0xFF06A3DA),
+                  style: TextStyle(
+                    fontSize: getFontSize(16),  // Adjusted font size based on screen width
+                    color: const Color(0xFF06A3DA),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   description,
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: TextStyle(
+                    fontSize: getFontSize(14),  // Adjusted font size based on screen width
                     color: Colors.black54,
                   ),
                 ),
@@ -255,4 +338,5 @@ class Home_Screen extends StatelessWidget {
     );
   }
 
+  getFontSize(int i) {}
 }

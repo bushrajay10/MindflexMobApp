@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase core
 import 'package:Mindlfex/splash_screen.dart';
-import 'package:Mindlfex/screens/home_screen.dart';
+import 'package:Mindlfex/screens/Home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter binding is initialized
@@ -34,10 +34,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const SignUpScreen(), // Your SignInScreen as the home
+      home: const Home_Screen(), // Your SignInScreen as the home
       routes: {
         '/signup': (context) => const SignUpScreen(), // Define the route for SignUpScreen
-        '/home': (context) => HomeScreen(), // Your home screen
+        '/home': (context) => Home_Screen(), // Your home screen
       },
     );
   }

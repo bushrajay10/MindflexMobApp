@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.mindflex"  // Ensure this matches your package name
-        minSdk = 21  // Set the minimum SDK version
+        minSdk = 23  // Set the minimum SDK version
         targetSdk = 34  // Set target SDK version to 34
         versionCode = 1  // Define version code (increment for each release)
         versionName = "1.0.0"  // Set the version name

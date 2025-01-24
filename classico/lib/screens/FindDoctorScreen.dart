@@ -6,7 +6,7 @@ import 'doctor_1.dart';
 import 'doctor_2.dart';
 import 'doctor_3.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:Mindlfex/screens/Home_Screen.dart'; // Import the Home screen
+import 'package:Mindlfex/screens/Home_screen.dart'; // Import the Home screen
 
 class FindDoctorScreen extends StatelessWidget {
   const FindDoctorScreen({Key? key}) : super(key: key);

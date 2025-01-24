@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Mindlfex/screens/ForgetPasswordScreen.dart'; // Import your ForgetPasswordScreen
 import 'package:Mindlfex/screens/DoctorHomeScreen.dart'; // Ensure you have the correct home screen for doctor
-import 'package:Mindlfex/screens/home_screen.dart'; // Ensure you have the correct home screen for patient
+import 'package:Mindlfex/screens/Home_screen.dart'; // Ensure you have the correct home screen for patient
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -192,7 +192,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     } else if (role == 'Patient') {
                                       Navigator.pushReplacement(
                                         context,
-                                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                                        MaterialPageRoute(builder: (context) => Home_Screen()),
                                       );
                                     } else {
                                       // Handle unexpected roles
