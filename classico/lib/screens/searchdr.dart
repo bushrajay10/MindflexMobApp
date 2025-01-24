@@ -160,11 +160,7 @@ class SearchDr extends StatelessWidget {
                   'Contact us',
                   style: TextStyle(fontSize: 18, color: Color(0xFF06A3DA)),
                 ),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const ContactUs()),
-                  );
-                },
+
               ),
               ListTile(
                 title: const Text(

@@ -190,12 +190,7 @@ class gamenav extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const BookAppointmentScreen()),
               );
               break;
-            //case 3:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ContactUs()),
-              );
-              break;
+
             default:
               print("Invalid index");
           }

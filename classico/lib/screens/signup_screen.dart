@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:Mindlfex/screens/signin_screen.dart'; // Adjust the import if needed
+import 'package:Mindlfex/screens/signin_screen.dart';
 import 'package:Mindlfex/screens/home_screen.dart';
 import 'package:Mindlfex/screens/DoctorHomeScreen.dart';
 
@@ -90,7 +90,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
-                          } else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+\$').hasMatch(value)) {
+                          } else if (!value.contains('@') || !value.contains('.')) {
                             return 'Please enter a valid email address';
                           }
                           return null;
@@ -118,6 +118,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Password';
+                          } else if (value.length < 8) {
+                            return 'Password must be at least 8 characters long';
                           }
                           return null;
                         },
@@ -167,10 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       DropdownButtonFormField<String>(
                         value: selectedRole,
                         items: roles.map((role) {
-                          return DropdownMenuItem<String>(
-                            value: role,
-                            child: Text(role),
-                          );
+                          return DropdownMenuItem<String>(value: role, child: Text(role));
                         }).toList(),
                         onChanged: (value) {
                           setState(() {
@@ -196,50 +195,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           onPressed: () async {
                             if (_formSignUpKey.currentState!.validate()) {
                               try {
-                                // Create user with Firebase Authentication
-                                UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+                                UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
                                   email: email,
                                   password: password,
                                 );
 
                                 // Get the current user
                                 User? user = userCredential.user;
-
                                 if (user != null) {
                                   // Save user data to Firestore
                                   await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
                                     'email': email,
                                     'username': username,
-                                    'role': selectedRole,  // Save the selected role
+                                    'role': selectedRole, // Save the selected role
                                     'uid': user.uid,
                                   });
 
-                                  // Retrieve the role from Firestore to determine navigation
-                                  DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-                                  String role = userDoc['role'];
-
-                                  // Navigate to the appropriate screen based on the role
-                                  if (role == 'Doctor') {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const DoctorHomeScreen()),
-                                    );
-                                  } else if (role == 'Patient') {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const HomeScreen()),
-                                    );
-                                  } else {
-                                    // Default fallback if role is not found (optional)
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Unknown role')));
-                                  }
+                                  // Navigate to the appropriate screen
+                                  Navigator.pushReplacementNamed(context, '/home');
                                 }
-                              } on FirebaseAuthException catch (e) {
-                                // Handle Firebase Auth errors
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message ?? 'Error')));
+                              } catch (e) {
+                                print('Error during sign up: $e');
                               }
+
                             }
                           },
+
                           child: const Text('Sign Up'),
                         ),
                       ),
@@ -247,12 +228,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Already have an account? ', style: TextStyle(color: Colors.black45)),
+                          const Text('Already have an account? ',
+                              style: TextStyle(color: Colors.black45)),
                           TextButton(
                             onPressed: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const SignInScreen()),
+                                MaterialPageRoute(
+                                    builder: (context) => const SignInScreen()),
                               );
                             },
                             child: const Text(

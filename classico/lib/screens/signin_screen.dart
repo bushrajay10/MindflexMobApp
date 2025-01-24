@@ -63,7 +63,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
-                          } else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+\$').hasMatch(value)) {
+                          } else if (!value.contains('@') || !value.contains('.')) {
                             return 'Please enter a valid email address';
                           }
                           return null;
@@ -151,7 +151,9 @@ class _SignInScreenState extends State<SignInScreen> {
                             },
                             child: const Text(
                               'Forget password?',
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF06A3DA)),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF06A3DA)),
                             ),
                           ),
                         ],
@@ -163,44 +165,65 @@ class _SignInScreenState extends State<SignInScreen> {
                           onPressed: () async {
                             if (_formSignInKey.currentState!.validate()) {
                               try {
-                                // Sign in with Firebase Authentication
-                                await _auth.signInWithEmailAndPassword(email: email, password: password);
+                                // Sign in with email and password
+                                await _auth.signInWithEmailAndPassword(
+                                    email: email, password: password);
 
-                                User? user = FirebaseAuth.instance.currentUser;
+                                // Get the current authenticated user
+                                User? user = _auth.currentUser;
                                 if (user != null) {
                                   // Fetch user data from Firestore
-                                  DocumentSnapshot userData = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+                                  DocumentSnapshot userData = await FirebaseFirestore.instance
+                                      .collection('users') // Collection name is 'users'
+                                      .doc(user.uid) // Use the authenticated user's UID
+                                      .get();
+
+                                  // Check if the user document exists
                                   if (userData.exists) {
+                                    // Get the role from Firestore
                                     String role = userData['role'];
 
-                                    // Navigate based on user role
+                                    // Navigate based on the role
                                     if (role == 'Doctor') {
                                       Navigator.pushReplacement(
                                         context,
-                                        MaterialPageRoute(builder: (context) => DoctorHomeScreen()), // Change to DoctorHomeScreen
+                                        MaterialPageRoute(builder: (context) => DoctorHomeScreen()),
                                       );
                                     } else if (role == 'Patient') {
                                       Navigator.pushReplacement(
                                         context,
-                                        MaterialPageRoute(builder: (context) => HomeScreen()), // Change to HomeScreen
+                                        MaterialPageRoute(builder: (context) => HomeScreen()),
                                       );
                                     } else {
-                                      // Handle other roles or default case
+                                      // Handle unexpected roles
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text('Unknown role for the user.'))
+                                      );
                                     }
                                   } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User data not found.')));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('User data not found.'))
+                                    );
                                   }
                                 }
                               } on FirebaseAuthException catch (e) {
-                                // Handle specific FirebaseAuth errors
+                                // Handle authentication errors
                                 if (e.code == 'user-not-found') {
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('No user found for that email.')));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('No user found for that email.'))
+                                  );
                                 } else if (e.code == 'wrong-password') {
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Incorrect password.')));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Incorrect password.'))
+                                  );
                                 } else if (e.code == 'invalid-email') {
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid email format.')));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Invalid email format.'))
+                                  );
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message ?? 'Error signing in')));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(e.message ?? 'Error signing in'))
+                                  );
                                 }
                               }
                             }
@@ -216,7 +239,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Don\'t have an account? ', style: TextStyle(color: Colors.black45)),
+                          const Text('Don\'t have an account? ',
+                              style: TextStyle(color: Colors.black45)),
                           TextButton(
                             onPressed: () {
                               Navigator.pushNamed(context, '/signup');
