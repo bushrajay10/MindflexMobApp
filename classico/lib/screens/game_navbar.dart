@@ -1,5 +1,4 @@
 import 'package:Mindlfex/screens/BookAppointmentScreen.dart';
-import 'package:Mindlfex/screens/profile_drawer.dart';
 import 'package:Mindlfex/screens/searchDr.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -121,7 +120,7 @@ class gamenav extends StatelessWidget {
                   ],
                 ),
               ),
-              _drawerItem('Profile', Profile(), context),
+
               //_drawerItem('Privacy Policy', const Privacypolicy(), context),
               //_drawerItem('My Doctors', const mydoc(), context),
               _drawerItem('My Appointments', const myappoint(), context),

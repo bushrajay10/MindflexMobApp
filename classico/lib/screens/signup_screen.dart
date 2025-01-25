@@ -19,13 +19,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String password = '';
   String rePassword = '';
   String username = '';
-  String selectedRole = 'Patient'; // Default role
+  int age = 18; // Default age
+  String gender = 'Male'; // Default gender
 
-  List<String> roles = ['Patient', 'Doctor']; // Available roles for selection
+  List<String> genders = ['Male', 'Female', 'Other'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF06A3DA), // Set the background color to blue
       body: Column(
         children: [
           const Expanded(
@@ -166,18 +168,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       const SizedBox(height: 25.0),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          age = int.tryParse(value) ?? 18;
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your age';
+                          }
+                          final ageValue = int.tryParse(value);
+                          if (ageValue == null || ageValue < 18 || ageValue > 80) {
+                            return 'Age must be between 18 and 80';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          label: const Text('Age'),
+                          hintText: 'Enter your age',
+                          hintStyle: const TextStyle(color: Colors.black26),
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.black12),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.black12),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 25.0),
                       DropdownButtonFormField<String>(
-                        value: selectedRole,
-                        items: roles.map((role) {
-                          return DropdownMenuItem<String>(value: role, child: Text(role));
+                        value: gender,
+                        items: genders.map((gender) {
+                          return DropdownMenuItem<String>(value: gender, child: Text(gender));
                         }).toList(),
                         onChanged: (value) {
                           setState(() {
-                            selectedRole = value!;
+                            gender = value!;
                           });
                         },
                         decoration: InputDecoration(
-                          labelText: 'Select Role',
+                          labelText: 'Gender',
                           border: OutlineInputBorder(
                             borderSide: const BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(10),
@@ -200,29 +232,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   password: password,
                                 );
 
-                                // Get the current user
                                 User? user = userCredential.user;
                                 if (user != null) {
-                                  // Save user data to Firestore
                                   await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
                                     'email': email,
                                     'username': username,
-                                    'role': selectedRole, // Save the selected role
+                                    'age': age,
+                                    'gender': gender,
                                     'uid': user.uid,
                                   });
 
-                                  // Navigate to the appropriate screen based on role
-                                  if (selectedRole == 'Patient') {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => Home_Screen()), // Patient Home Screen
-                                    );
-                                  } else if (selectedRole == 'Doctor') {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => DoctorHomeScreen()), // Doctor Home Screen
-                                    );
-                                  }
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => Home_Screen()),
+                                  );
                                 }
                               } catch (e) {
                                 print('Error during sign up: $e');

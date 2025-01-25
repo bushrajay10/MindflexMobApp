@@ -1,14 +1,5 @@
-import 'package:Mindlfex/screens/FindDoctorScreen.dart';
-import 'package:Mindlfex/screens/Home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-
-void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: BookAppointmentScreen(),
-  ));
-}
 
 class BookAppointmentScreen extends StatefulWidget {
   const BookAppointmentScreen({Key? key}) : super(key: key);
@@ -26,9 +17,29 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
 
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay(hour: 12, minute: 0);
-  String _selectedDoctor = 'Select Doctor';
+  String _selectedDoctor = 'Select Doctor';  // Default value
   String _consultationType = 'Online';
   int _appointmentFee = 1000;
+  List<String> _doctorList = [];  // List to store doctor usernames
+
+  // Fetch doctors from Firebase Firestore
+  Future<void> _fetchDoctors() async {
+    try {
+      var doctorDocs = await FirebaseFirestore.instance.collection('doctors').get();
+      setState(() {
+        _doctorList = doctorDocs.docs.map((doc) => doc['username'] as String).toList();
+        _doctorList.insert(0, 'Select Doctor'); // Add the placeholder to the list
+      });
+    } catch (e) {
+      print("Error fetching doctors: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchDoctors(); // Fetch doctors when the screen is loaded
+  }
 
   // Time Picker function
   Future<void> _selectTime() async {
@@ -208,13 +219,16 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
 
                 // Doctor Selection Dropdown
                 DropdownButtonFormField<String>(
-                  value: _selectedDoctor,
-                  items: <String>['Select Doctor', 'Dr. Maryam', 'Dr. Anus']
-                      .map((doctor) => DropdownMenuItem<String>(value: doctor, child: Text(doctor)))
+                  value: _selectedDoctor == 'Select Doctor' ? null : _selectedDoctor, // Default value
+                  items: _doctorList
+                      .map((doctor) => DropdownMenuItem<String>(
+                    value: doctor,
+                    child: Text(doctor),
+                  ))
                       .toList(),
                   onChanged: (value) {
                     setState(() {
-                      _selectedDoctor = value!;
+                      _selectedDoctor = value ?? 'Select Doctor';  // Default back to Select Doctor
                     });
                   },
                   decoration: const InputDecoration(
@@ -305,43 +319,6 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
             ),
           ),
         ),
-      ),
-
-      // Bottom Navigation Bar
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.white,
-        color: const Color(0xFF06A3DA),
-        animationDuration: const Duration(milliseconds: 400),
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Home_Screen()),
-              );
-              break;
-            case 1:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => FindDoctorScreen()),
-              );
-              break;
-            case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const BookAppointmentScreen()),
-              );
-              break;
-            default:
-              print("Invalid index");
-          }
-        },
-        items: const [
-          Icon(Icons.home, color: Colors.white),
-          Icon(Icons.medical_services, color: Colors.white), // Medical icon
-          Icon(Icons.book, color: Colors.white),
-
-        ],
       ),
     );
   }

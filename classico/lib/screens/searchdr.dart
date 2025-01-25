@@ -1,4 +1,3 @@
-import 'package:Mindlfex/screens/profile_drawer.dart';
 import 'package:Mindlfex/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'PrivacyPolicy.dart';
@@ -101,14 +100,7 @@ class SearchDr extends StatelessWidget {
                     color: Color(0xFF06A3DA),
                   ),
                 ),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          Profile(),
-                    ),
-                  );
-                },
+
               ),
               ListTile(
                 title: const Text(

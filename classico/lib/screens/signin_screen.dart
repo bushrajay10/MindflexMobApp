@@ -24,6 +24,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF06A3DA), // Set the background color to blue
       body: Column(
         children: [
           const Expanded(

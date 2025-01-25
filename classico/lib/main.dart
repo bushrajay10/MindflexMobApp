@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const Home_Screen(), // Your SignInScreen as the home
+      home: const BookAppointmentScreen(), // Your SignInScreen as the home
       routes: {
         '/signup': (context) => const SignUpScreen(), // Define the route for SignUpScreen
         '/home': (context) => Home_Screen(), // Your home screen
